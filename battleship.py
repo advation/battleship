@@ -1,5 +1,9 @@
 import os
+
 from random import randint
+
+def clearScreen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def print_board(board):
     for row in board:
@@ -8,10 +12,7 @@ def print_board(board):
 board = []
 enemyPositions = []
 
-try:
-    os.system('clear')
-except:
-    os.system('cls')
+clearScreen()
 
 print "                                             |__"
 print "                                             |\/"
@@ -33,10 +34,7 @@ while True:
     try:
         boardSize = int(raw_input("Board Size:"))
     except ValueError:
-        try:
-            os.system('clear')
-        except:
-            os.system('cls')
+        clearScreen()
         print("This is not a valid entry.")
         continue
     else:
@@ -48,10 +46,7 @@ while True:
     try:
         enemyShips = int(raw_input("Number of enemy ships:"))
     except ValueError:
-        try:
-            os.system('clear')
-        except:
-            os.system('cls')
+        clearScreen()
         print("This is not a valid entry.")
         continue
     else:
@@ -69,10 +64,7 @@ lockPositions = enemyPositions
 
 for x in range(turns):
 
-    try:
-        os.system('clear')
-    except:
-        os.system('cls')
+    clearScreen()
 
     print "== BATTLESHIP =="
     print_board(board)
@@ -128,10 +120,7 @@ for x in range(turns):
 
     turns = turns-1;
 
-try:
-    os.system('clear')
-except:
-    os.system('cls')
+clearScreen()
 
 print "GAME OVER"
 print "Enemy location " + "#" + " | " + "Missed shots " + "x"
@@ -140,4 +129,13 @@ for x in lockPositions:
     board[x[0]][x[1]] = "#"
 
 print_board(board)
-exit()
+
+while True:
+    try:
+        answer = raw_input("Exit (y/n)?")
+        if answer == "y" or answer == "Y":
+            exit()
+        else:
+            continue
+    except ValueError:
+        continue
