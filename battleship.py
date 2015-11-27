@@ -5,9 +5,28 @@ board = []
 enemyPositions = []
 
 os.system('clear')
-boardSize = int(raw_input("Board Size:"))
+
+while True:
+    try:
+        boardSize = int(raw_input("Board Size:"))
+    except ValueError:
+        os.system('clear')
+        print("This is not a valid entry.")
+        continue
+    else:
+        break
+
 turns = int(boardSize * 1.5)
-enemyShips = int(raw_input("Number of enemy ships:"))
+
+while True:
+    try:
+        enemyShips = int(raw_input("Number of enemy ships:"))
+    except ValueError:
+        os.system('clear')
+        print("This is not a valid entry.")
+        continue
+    else:
+        break
 
 for x in range(boardSize):
     board.append([u"\u25A1"] * boardSize)
@@ -28,8 +47,31 @@ for x in range(turns):
     print "Shot " + str(x+1) + " out of " + str(turns) + "."
     print_board(board)
 
-    user_x = int(raw_input("Target X Coordinate:"))
-    user_y = int(raw_input("Target Y Coordinate:"))
+    while True:
+        try:
+            user_x = int(raw_input("Target X Coordinate:"))
+            if user_x > boardSize or user_x < 1:
+                raise ValueError
+            else:
+                break
+        except ValueError:
+            print("ERROR: Value must be numeric and between 1 and "+str(boardSize))
+            continue
+        else:
+            break
+
+    while True:
+        try:
+            user_y = int(raw_input("Target Y Coordinate:"))
+            if user_y > boardSize or user_y < 1:
+                raise ValueError
+            else:
+                break
+        except ValueError:
+            print("ERROR: Value must be numeric and between 1 and "+str(boardSize))
+            continue
+        else:
+            break
 
     shot = []
     shot.append(user_x)
