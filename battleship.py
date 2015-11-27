@@ -7,7 +7,6 @@ enemyPositions = []
 os.system('clear')
 boardSize = int(raw_input("Board Size:"))
 turns = int(boardSize * 1.5)
-#turns = 1
 enemyShips = int(raw_input("Number of enemy ships:"))
 
 for x in range(boardSize):
@@ -38,17 +37,17 @@ for x in range(turns):
 
     enemyCount = len(enemyPositions)
 
-    #Need to fix this
-    for y in range(enemyCount):
-	    k = 0
-	    if lockPositions[k] == shot:
-	        print "HIT!"
-	        board[user_x-1][user_y-1] = "X"
-	        enemyPositions.remove(shot)
-	    else:
-	        print "MISS"
-	        board[user_x-1][user_y-1] = u"\u25CF"
-	    k+1
+    if shot in enemyPositions:
+        board[user_x-1][user_y-1] = "X"
+        position = int(enemyPositions.index(shot))
+        for b in range(len(enemyPositions)):
+            if b == position:
+                del enemyPositions[b]
+    else:
+        board[user_x-1][user_y-1] = u"\u25CF"
+
+    #Uncomment for DEV
+    #print enemyPositions
 
     enemyCount = len(enemyPositions)
 
