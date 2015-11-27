@@ -1,16 +1,28 @@
 import os
 from random import randint
 
+def print_board(board):
+    for row in board:
+        print " ".join(row)
+
 board = []
 enemyPositions = []
 
-os.system('clear')
+try:
+    os.system('clear')
+except:
+    os.system('cls')
+
+print "== BATTLESHIP =="
 
 while True:
     try:
         boardSize = int(raw_input("Board Size:"))
     except ValueError:
-        os.system('clear')
+        try:
+            os.system('clear')
+        except:
+            os.system('cls')
         print("This is not a valid entry.")
         continue
     else:
@@ -22,18 +34,17 @@ while True:
     try:
         enemyShips = int(raw_input("Number of enemy ships:"))
     except ValueError:
-        os.system('clear')
+        try:
+            os.system('clear')
+        except:
+            os.system('cls')
         print("This is not a valid entry.")
         continue
     else:
         break
 
 for x in range(boardSize):
-    board.append([u"\u25A1"] * boardSize)
-
-def print_board(board):
-    for row in board:
-        print " ".join(row)
+    board.append(["o"] * boardSize)
 
 for x in range(enemyShips):
     coors = [randint(1,boardSize)]
@@ -43,9 +54,16 @@ for x in range(enemyShips):
 lockPositions = enemyPositions
 
 for x in range(turns):
-    os.system('clear')
-    print "Shot " + str(x+1) + " out of " + str(turns) + "."
+
+    try:
+        os.system('clear')
+    except:
+        os.system('cls')
+
+    print "== BATTLESHIP =="
     print_board(board)
+    print "Miss (x) | Hit (*)"
+    print "Shots remaining " + str(turns) + "."
 
     while True:
         try:
@@ -80,16 +98,13 @@ for x in range(turns):
     enemyCount = len(enemyPositions)
 
     if shot in enemyPositions:
-        board[user_x-1][user_y-1] = "X"
+        board[user_x-1][user_y-1] = "*"
         position = int(enemyPositions.index(shot))
         for b in range(len(enemyPositions)):
             if b == position:
                 del enemyPositions[b]
     else:
-        board[user_x-1][user_y-1] = u"\u25CF"
-
-    #Uncomment for DEV
-    #print enemyPositions
+        board[user_x-1][user_y-1] = "x"
 
     enemyCount = len(enemyPositions)
 
@@ -97,13 +112,18 @@ for x in range(turns):
         print "Victory is yours!"
         exit();
 
-os.system('clear')
+    turns = turns-1;
+
+try:
+    os.system('clear')
+except:
+    os.system('cls')
+
 print "GAME OVER"
-print "Enemy location " + u"\u25A0"
-print "Missed shots " + u"\u25CF"
+print "Enemy location " + "#" + " | " + "Missed shots " + "x"
 
 for x in lockPositions:
-    board[x[0]][x[1]] = u"\u25A0"
+    board[x[0]][x[1]] = "#"
 
 print_board(board)
 exit()
