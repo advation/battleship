@@ -1,32 +1,12 @@
 import os
-import time
-
 from random import randint
+
+f = open('battleship.txt', 'r')
+file_contents = f.read()
+f.close()
 
 def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-clearScreen()
-
-print "                                             |__"
-print "                                             |\/"
-print "                                             ---"
-print "                                             / | ["
-print "                                      !      | |||"
-print "                                    _/|     _/|-++'"
-print "                                +  +--|    |--|--|_ |-"
-print "                             { /|__|  |/\__|  |--- |||__/"
-print "                            +---------------___[}-_===_.'"
-print "                        ____`-' ||___-{]_| _[}-  |     |_[___\==--"
-print "         __..._____--==/___]_|__|_____________________________[___\==--____,---------7"
-print "        |                                 BATTLESHIP                                /"
-print "         \_________________________________________________________________________/"
-print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-
-
-
-
 
 class game:
 
@@ -89,9 +69,9 @@ class game:
         shotcoord.append(y-1)
 
         if shotcoord in self.enemyPositions:
-            self.board[x-1][y-1] = " *"
-        else:
             self.board[x-1][y-1] = " x"
+        else:
+            self.board[x-1][y-1] = " o"
 
         if shotcoord not in self.shots:
             self.shots.append(shotcoord)
@@ -99,11 +79,8 @@ class game:
         self.turns = self.turns-1;
 
 
-
-
-
-
-
+clearScreen()
+print file_contents
 Game = game()
 
 while True:
@@ -128,13 +105,12 @@ while True:
 
 Game.create_game(boardSize, enemyShips)
 
-
 for x in range(Game.turns):
 
     clearScreen()
     print "== BATTLESHIP =="
     Game.print_board()
-    print "Miss (x) | Hit (*)"
+    print "Miss (o) | Hit (x)"
     print "Shots remaining " + str(Game.turns) + "."
 
     while True:
@@ -163,7 +139,6 @@ for x in range(Game.turns):
         else:
             break
 
-
     Game.shot(user_x, user_y)
 
     if Game.enemyPositions == Game.shots:
@@ -173,11 +148,11 @@ for x in range(Game.turns):
 clearScreen()
 
 print "GAME OVER"
-print "Enemy location " + "#" + " | " + "Missed shots " + "x"
+print "Enemy location " + "S" + " | " + "Missed shots " + "o"
 
 for x in Game.enemyPositions:
-    if Game.board[x[0]][x[1]] != " *":
-        Game.board[x[0]][x[1]] = " #"
+    if Game.board[x[0]][x[1]] != " x":
+        Game.board[x[0]][x[1]] = " S"
 
 Game.print_board()
 
