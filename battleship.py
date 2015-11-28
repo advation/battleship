@@ -1,16 +1,10 @@
 import os
+import time
 
 from random import randint
 
 def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-def print_board(board):
-    for row in board:
-        print " ".join(row)
-
-board = []
-enemyPositions = []
 
 clearScreen()
 
@@ -30,6 +24,93 @@ print "         \_______________________________________________________________
 print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
+
+
+
+
+class game:
+
+    board = []
+    enemyPositions = []
+    shots = []
+    turns = 0
+
+    def create_game(self, boardSize, enemyShips):
+        self.build_board(boardSize)
+        self.gen_enemy(enemyShips)
+        self.gen_turns(boardSize)
+
+    def print_board(self):
+        for row in self.board:
+            print " ".join(row)
+        #print self.board
+
+    def build_board(self, boardSize):
+        for x in range(boardSize+1):
+            if x == 0:
+                temp = []
+                for y in range(boardSize+1):
+                   if y == 0:
+                       temp.append("  ")
+                   else:
+                       if y < 10:
+                            temp.append(str(y) + " ")
+                       else:
+                            temp.append(str(y))
+                self.board.append(temp)
+            else:
+                temp = []
+                if x is not 0:
+                    if x < 10:
+                        temp.append(str(x) + " " )
+                    else:
+                        temp.append(str(x))
+                    for c in range(boardSize):
+                        temp.append("o ")
+                self.board.append(temp)
+
+
+    def gen_enemy(self, enemyShips):
+        x = 1
+        while x <= enemyShips:
+            enemyShipcoords = [randint(1,boardSize)]
+            enemyShipcoords += [randint(1,boardSize)]
+            if enemyShipcoords not in self.enemyPositions:
+                self.enemyPositions.append(enemyShipcoords)
+                x = x+1
+
+        self._enemyPositons = self.enemyPositions
+
+    def enemyCount(self):
+        return len(self.enemyPositions)
+
+    def gen_turns(self, boardSize):
+        self.turns = int(boardSize * 1.5)
+
+    def shot(self, x, y):
+
+        shotcoord = []
+        shotcoord.append(x)
+        shotcoord.append(y)
+
+        if shotcoord in self.enemyPositions:
+            self.board[x][y] = "* "
+
+        if shotcoord not in self.shots:
+            self.shots.append(shotcoord)
+        else:
+            self.board[x][y] = "x "
+
+        self.turns = self.turns-1;
+
+
+
+
+
+
+
+Game = game()
+
 while True:
     try:
         boardSize = int(raw_input("Board Size:"))
@@ -39,8 +120,6 @@ while True:
         continue
     else:
         break
-
-turns = int(boardSize * 1.5)
 
 while True:
     try:
@@ -52,24 +131,17 @@ while True:
     else:
         break
 
-for x in range(boardSize):
-    board.append(["o"] * boardSize)
+Game.create_game(boardSize, enemyShips)
 
-for x in range(enemyShips):
-    coors = [randint(1,boardSize)]
-    coors += [randint(1,boardSize)]
-    enemyPositions.append(coors)
 
-lockPositions = enemyPositions
+for x in range(Game.turns):
 
-for x in range(turns):
 
     clearScreen()
-
     print "== BATTLESHIP =="
-    print_board(board)
+    Game.print_board()
     print "Miss (x) | Hit (*)"
-    print "Shots remaining " + str(turns) + "."
+    print "Shots remaining " + str(Game.turns) + "."
 
     while True:
         try:
@@ -97,38 +169,23 @@ for x in range(turns):
         else:
             break
 
-    shot = []
-    shot.append(user_x)
-    shot.append(user_y)
 
-    enemyCount = len(enemyPositions)
+    Game.shot(user_x, user_y)
 
-    if shot in enemyPositions:
-        board[user_x-1][user_y-1] = "*"
-        position = int(enemyPositions.index(shot))
-        for b in range(len(enemyPositions)):
-            if b == position:
-                del enemyPositions[b]
-    else:
-        board[user_x-1][user_y-1] = "x"
-
-    enemyCount = len(enemyPositions)
-
-    if len(enemyPositions) == 0:
+    if len(Game.enemyPositions) == len(Game.shots):
         print "Victory is yours!"
         exit();
 
-    turns = turns-1;
-
 clearScreen()
+
 
 print "GAME OVER"
 print "Enemy location " + "#" + " | " + "Missed shots " + "x"
 
-for x in lockPositions:
-    board[x[0]][x[1]] = "#"
+for x in Game.enemyPositions:
+    Game.board[x[0]][x[1]] = "# "
 
-print_board(board)
+Game.print_board()
 
 while True:
     try:
