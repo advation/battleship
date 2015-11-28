@@ -62,7 +62,7 @@ class game:
 
     def build_board(self, boardSize):
         for x in range(boardSize):
-            self.board.append([" o"] * boardSize)
+            self.board.append([" ."] * boardSize)
 
 
     def gen_enemy(self, enemyShips):
