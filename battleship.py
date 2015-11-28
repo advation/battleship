@@ -181,6 +181,7 @@ for x in Game.enemyPositions:
 
 Game.print_board()
 
+
 while True:
     try:
         answer = raw_input("Exit (y/n)?")
